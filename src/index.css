@@ -1,0 +1,109 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@theme {
+  --color-ink: #152a38;
+  --color-ink-soft: #4d6674;
+  --color-teal: #0e7c86;
+  --color-sun: #f2b544;
+  --color-mist: #eef3f4;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+
+/* Marcadores Leaflet */
+.pin-contenedor {
+  background: transparent;
+  border: none;
+}
+
+.pin {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  transform: rotate(-45deg);
+  border-radius: 50% 50% 50% 5px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 5px 14px rgb(21 42 56 / 28%);
+  color: #ffffff;
+  transition: transform 160ms ease;
+}
+
+.pin > svg {
+  transform: rotate(45deg);
+}
+
+.pin-temporal {
+  background: var(--color-sun) !important;
+  animation: pin-latido 1.4s ease-in-out infinite;
+}
+
+@keyframes pin-latido {
+  0%,
+  100% {
+    transform: rotate(-45deg) scale(1);
+  }
+  50% {
+    transform: rotate(-45deg) scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pin-temporal {
+    animation: none;
+  }
+}
+
+/* Popups */
+.leaflet-popup-content-wrapper {
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgb(21 42 56 / 18%);
+  padding: 2px;
+}
+
+.leaflet-popup-content {
+  margin: 12px 14px;
+  font-family: var(--font-body);
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  top: 6px;
+  right: 6px;
+  color: var(--color-ink-soft);
+}
+
+/* Barra de desplazamiento del panel */
+.panel-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd8dc transparent;
+}
+
+.panel-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.panel-scroll::-webkit-scrollbar-thumb {
+  background: #cbd8dc;
+  border-radius: 999px;
+}
