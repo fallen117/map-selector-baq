@@ -1,7 +1,7 @@
 /** Configuración central del mapa: ciudad, encuadre y límites. */
 
 export const CIUDAD = {
-  nombre: 'Soledad',
+  nombre: 'Barranquilla - Área Metropolitana',
   subtitulo: 'Mapa de interés',
   region: 'Atlántico, Colombia',
 } as const
