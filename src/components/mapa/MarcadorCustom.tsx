@@ -3,6 +3,7 @@ import type { Marker as LeafletMarker } from 'leaflet'
 import { MapPin } from 'lucide-react'
 import { Marker, Popup } from 'react-leaflet'
 import { buscarCategoria } from '../../config/categorias'
+import { buscarDisponibilidad } from '../../config/disponibilidad'
 import type { PuntoInteres } from '../../types/mapa.types'
 import { crearIconoPin } from '../../utils/iconosLeaflet'
 
@@ -44,9 +45,30 @@ export function MarcadorCustom({ punto, resaltado, onSeleccionar }: Props) {
           </span>
           <div className="min-w-0">
             <p className="font-display text-sm font-bold leading-tight">{punto.titulo}</p>
-            <p className="mt-1.5 text-xs leading-relaxed text-ink-soft">
-              {punto.descripcion}
-            </p>
+            {punto.disponibilidades.length > 0 ? (
+              <div className="mt-1.5 flex flex-wrap gap-1">
+                {punto.disponibilidades.map((disponibilidad) => {
+                  const opcion = buscarDisponibilidad(disponibilidad.nombre)
+                  const IconoDisponibilidad = opcion?.Icono
+
+                  return (
+                    <span
+                      key={disponibilidad.id}
+                      className="inline-flex items-center gap-1 rounded-md bg-mist px-1.5 py-0.5 text-[10px] font-semibold text-ink-soft"
+                    >
+                      {IconoDisponibilidad && (
+                        <IconoDisponibilidad size={11} color={opcion?.color} />
+                      )}
+                      {disponibilidad.nombre}
+                    </span>
+                  )
+                })}
+              </div>
+            ) : (
+              <p className="mt-1.5 text-[11px] text-ink-soft">
+                Sin disponibilidad registrada
+              </p>
+            )}
             <p className="mt-2 font-data text-[10px] text-[#8BA0AA]">
               {punto.latitud.toFixed(5)}, {punto.longitud.toFixed(5)}
             </p>

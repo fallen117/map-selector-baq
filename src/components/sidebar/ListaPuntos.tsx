@@ -1,11 +1,15 @@
-import { Compass, MapPinOff } from 'lucide-react'
+import { useState } from 'react'
+import { Compass, LoaderCircle, MapPinOff, Pencil, Trash2 } from 'lucide-react'
 import { buscarCategoria } from '../../config/categorias'
+import { buscarDisponibilidad } from '../../config/disponibilidad'
 import type { PuntoInteres } from '../../types/mapa.types'
 
 interface Props {
   puntos: PuntoInteres[]
   cargando: boolean
   onSeleccionar: (punto: PuntoInteres) => void
+  onEditar: (punto: PuntoInteres) => void
+  onEliminar: (id: string) => Promise<boolean>
   hayFiltros: boolean
   onLimpiarFiltros: () => void
 }
@@ -14,9 +18,14 @@ export function ListaPuntos({
   puntos,
   cargando,
   onSeleccionar,
+  onEditar,
+  onEliminar,
   hayFiltros,
   onLimpiarFiltros,
 }: Props) {
+  const [confirmandoId, setConfirmandoId] = useState<string | null>(null)
+  const [eliminandoId, setEliminandoId] = useState<string | null>(null)
+
   if (cargando) {
     return (
       <div className="space-y-3" aria-label="Cargando puntos">
@@ -78,32 +87,121 @@ export function ListaPuntos({
           const categoria = buscarCategoria(punto.categoria?.nombre)
           const Icono = categoria?.Icono ?? Compass
           const color = categoria?.color ?? '#0E7C86'
+          const confirmando = confirmandoId === punto.id
+          const eliminando = eliminandoId === punto.id
 
           return (
-            <li key={punto.id}>
-              <button
-                type="button"
-                onClick={() => onSeleccionar(punto)}
-                className="flex w-full gap-3 rounded-xl p-3 text-left transition hover:bg-mist focus-visible:bg-mist"
-              >
-                <span
-                  className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg"
-                  style={{ backgroundColor: `${color}1A`, color }}
+            <li key={punto.id} className="rounded-xl transition hover:bg-mist/70">
+              <div className="flex items-start gap-1 p-2">
+                <button
+                  type="button"
+                  onClick={() => onSeleccionar(punto)}
+                  className="flex min-w-0 flex-1 gap-3 rounded-lg p-1 text-left"
                 >
-                  <Icono size={17} />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate font-display text-sm font-semibold">
-                    {punto.titulo}
+                  <span
+                    className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-lg"
+                    style={{ backgroundColor: `${color}1A`, color }}
+                  >
+                    <Icono size={17} />
                   </span>
-                  <span className="mt-0.5 block line-clamp-2 text-xs leading-relaxed text-ink-soft">
-                    {punto.descripcion}
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate font-display text-sm font-semibold">
+                      {punto.titulo}
+                    </span>
+                    {punto.disponibilidades.length > 0 ? (
+                      <span className="mt-1 flex flex-wrap gap-1">
+                        {punto.disponibilidades.map((disponibilidad) => {
+                          const opcion = buscarDisponibilidad(
+                            disponibilidad.nombre,
+                          )
+                          const IconoDisponibilidad = opcion?.Icono
+
+                          return (
+                            <span
+                              key={disponibilidad.id}
+                              className="inline-flex items-center gap-1 rounded-md bg-mist px-1.5 py-0.5 text-[10px] font-semibold text-ink-soft"
+                            >
+                              {IconoDisponibilidad && (
+                                <IconoDisponibilidad
+                                  size={11}
+                                  color={opcion?.color}
+                                />
+                              )}
+                              {disponibilidad.nombre}
+                            </span>
+                          )
+                        })}
+                      </span>
+                    ) : (
+                      <span className="mt-0.5 block text-[11px] text-ink-soft">
+                        Sin disponibilidad registrada
+                      </span>
+                    )}
+                    <span className="mt-1.5 block font-data text-[10px] text-[#8BA0AA]">
+                      {punto.latitud.toFixed(4)}, {punto.longitud.toFixed(4)}
+                    </span>
                   </span>
-                  <span className="mt-1.5 block font-data text-[10px] text-[#8BA0AA]">
-                    {punto.latitud.toFixed(4)}, {punto.longitud.toFixed(4)}
-                  </span>
-                </span>
-              </button>
+                </button>
+
+                <div className="flex shrink-0 items-center gap-0.5">
+                  <button
+                    type="button"
+                    onClick={() => onEditar(punto)}
+                    aria-label={`Editar ${punto.titulo}`}
+                    title="Editar punto"
+                    className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft transition hover:bg-white hover:text-teal"
+                  >
+                    <Pencil size={15} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setConfirmandoId(punto.id)}
+                    aria-label={`Eliminar ${punto.titulo}`}
+                    title="Eliminar punto"
+                    className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft transition hover:bg-red-50 hover:text-red-600"
+                  >
+                    <Trash2 size={15} />
+                  </button>
+                </div>
+              </div>
+
+              {confirmando && (
+                <div className="mx-2 mb-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2">
+                  <p className="text-[11px] font-semibold text-red-800">
+                    ¿Eliminar este punto?
+                  </p>
+                  <p className="mt-0.5 text-[10px] text-red-700">
+                    La acción se guardará en la base de datos.
+                  </p>
+                  <div className="mt-2 flex gap-2">
+                    <button
+                      type="button"
+                      disabled={eliminando}
+                      onClick={async () => {
+                        setEliminandoId(punto.id)
+                        await onEliminar(punto.id)
+                        setEliminandoId(null)
+                        setConfirmandoId(null)
+                      }}
+                      className="rounded-md bg-red-600 px-2.5 py-1.5 text-[11px] font-semibold text-white transition hover:bg-red-700 disabled:opacity-60"
+                    >
+                      {eliminando ? (
+                        <LoaderCircle size={12} className="animate-spin" />
+                      ) : (
+                        'Eliminar'
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      disabled={eliminando}
+                      onClick={() => setConfirmandoId(null)}
+                      className="rounded-md px-2.5 py-1.5 text-[11px] font-semibold text-red-800 hover:underline"
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </div>
+              )}
             </li>
           )
         })}

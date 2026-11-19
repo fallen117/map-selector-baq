@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { crearPunto, obtenerPuntos } from '../services/puntosService'
+import {
+  actualizarPunto,
+  crearPunto,
+  eliminarPunto,
+  obtenerPuntos,
+} from '../services/puntosService'
 import type { NuevoPunto, PuntoInteres } from '../types/mapa.types'
 
 export function usePuntos() {
@@ -31,6 +36,26 @@ export function usePuntos() {
     return creado
   }, [])
 
+  const editarPunto = useCallback(async (id: string, nuevo: NuevoPunto) => {
+    const actualizado = await actualizarPunto(id, nuevo)
+    setPuntos((actuales) =>
+      actuales.map((punto) => (punto.id === id ? actualizado : punto)),
+    )
+    return actualizado
+  }, [])
+
+  const borrarPunto = useCallback(async (id: string) => {
+    setError(null)
+    try {
+      await eliminarPunto(id)
+      setPuntos((actuales) => actuales.filter((punto) => punto.id !== id))
+      return true
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'No se pudo eliminar el punto.')
+      return false
+    }
+  }, [])
+
   const limpiarFiltros = useCallback(() => {
     setTermino('')
     setCategoriaActiva(null)
@@ -43,7 +68,9 @@ export function usePuntos() {
       const coincideTexto =
         !texto ||
         punto.titulo.toLowerCase().includes(texto) ||
-        punto.descripcion.toLowerCase().includes(texto)
+        punto.disponibilidades.some((disponibilidad) =>
+          disponibilidad.nombre.toLowerCase().includes(texto),
+        )
 
       const coincideCategoria =
         !categoriaActiva || punto.categoria?.nombre === categoriaActiva
@@ -64,5 +91,7 @@ export function usePuntos() {
     limpiarFiltros,
     recargar,
     guardarPunto,
+    editarPunto,
+    borrarPunto,
   }
 }

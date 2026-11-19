@@ -12,14 +12,18 @@ interface Props {
   termino: string
   categoriaActiva: string | null
   coordenadasTemporales: Coordenadas | null
+  puntoEnEdicion: PuntoInteres | null
   hayFiltros: boolean
   onTermino: (valor: string) => void
   onCategoria: (nombre: string | null) => void
   onLimpiarFiltros: () => void
   onReintentar: () => void
   onCancelar: () => void
+  onCancelarEdicion: () => void
   onGuardar: (nuevo: NuevoPunto) => Promise<void>
   onSeleccionar: (punto: PuntoInteres) => void
+  onEditar: (punto: PuntoInteres) => void
+  onEliminar: (id: string) => Promise<boolean>
 }
 
 export function PanelLateral({
@@ -29,14 +33,18 @@ export function PanelLateral({
   termino,
   categoriaActiva,
   coordenadasTemporales,
+  puntoEnEdicion,
   hayFiltros,
   onTermino,
   onCategoria,
   onLimpiarFiltros,
   onReintentar,
   onCancelar,
+  onCancelarEdicion,
   onGuardar,
   onSeleccionar,
+  onEditar,
+  onEliminar,
 }: Props) {
   return (
     <aside className="z-20 flex h-[45vh] w-full shrink-0 flex-col border-b border-[#E6ECEE] bg-white md:h-full md:w-[30%] md:min-w-[320px] md:max-w-[460px] md:border-b-0 md:border-r">
@@ -86,8 +94,20 @@ export function PanelLateral({
 
         {coordenadasTemporales ? (
           <FormularioPunto
+            key="nuevo"
             coordenadas={coordenadasTemporales}
             onCancelar={onCancelar}
+            onGuardar={onGuardar}
+          />
+        ) : puntoEnEdicion ? (
+          <FormularioPunto
+            key={puntoEnEdicion.id}
+            coordenadas={{
+              lat: puntoEnEdicion.latitud,
+              lng: puntoEnEdicion.longitud,
+            }}
+            punto={puntoEnEdicion}
+            onCancelar={onCancelarEdicion}
             onGuardar={onGuardar}
           />
         ) : (
@@ -95,6 +115,8 @@ export function PanelLateral({
             puntos={puntos}
             cargando={cargando}
             onSeleccionar={onSeleccionar}
+            onEditar={onEditar}
+            onEliminar={onEliminar}
             hayFiltros={hayFiltros}
             onLimpiarFiltros={onLimpiarFiltros}
           />

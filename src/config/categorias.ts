@@ -1,9 +1,9 @@
 import {
   AlertTriangle,
-  Landmark,
+  ParkingSquare,
   ShoppingBag,
+  Toilet,
   Trees,
-  Utensils,
   type LucideIcon,
 } from 'lucide-react'
 
@@ -16,11 +16,11 @@ export interface CategoriaCatalogo {
 }
 
 export const CATEGORIAS: CategoriaCatalogo[] = [
-  { nombre: 'Restaurante', icono: 'Utensils', color: '#D9634F', Icono: Utensils },
-  { nombre: 'Parque', icono: 'Trees', color: '#2F8F6B', Icono: Trees },
-  { nombre: 'Alerta', icono: 'TriangleAlert', color: '#D99A2B', Icono: AlertTriangle },
   { nombre: 'Tienda', icono: 'ShoppingBag', color: '#3F6FB5', Icono: ShoppingBag },
-  { nombre: 'Servicio', icono: 'Landmark', color: '#7A5EA8', Icono: Landmark },
+  { nombre: 'Parqueadero', icono: 'Utensils', color: '#D9634F', Icono: ParkingSquare },
+  { nombre: 'Parque', icono: 'Trees', color: '#2F8F6B', Icono: Trees },
+  { nombre: 'Baño', icono: 'Toilet', color: '#7A5EA8', Icono: Toilet },
+  { nombre: 'Alerta', icono: 'TriangleAlert', color: '#D99A2B', Icono: AlertTriangle },
 ]
 
 export function buscarCategoria(nombre: string | null | undefined) {

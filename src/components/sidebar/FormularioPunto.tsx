@@ -1,35 +1,64 @@
 import { useState, type FormEvent } from 'react'
-import { ArrowLeft, LoaderCircle, Save } from 'lucide-react'
-import { CATEGORIAS } from '../../config/categorias'
-import type { Coordenadas, NuevoPunto } from '../../types/mapa.types'
+import { ArrowLeft, Check, LoaderCircle, Save } from 'lucide-react'
+import { buscarCategoria, CATEGORIAS } from '../../config/categorias'
+import { DISPONIBILIDADES } from '../../config/disponibilidad'
+import type { Coordenadas, NuevoPunto, PuntoInteres } from '../../types/mapa.types'
 
 interface Props {
   coordenadas: Coordenadas
+  punto?: PuntoInteres | null
   onCancelar: () => void
   onGuardar: (nuevo: NuevoPunto) => Promise<void>
 }
 
-export function FormularioPunto({ coordenadas, onCancelar, onGuardar }: Props) {
-  const [titulo, setTitulo] = useState('')
-  const [descripcion, setDescripcion] = useState('')
-  const [categoria, setCategoria] = useState(CATEGORIAS[0])
+export function FormularioPunto({
+  coordenadas,
+  punto,
+  onCancelar,
+  onGuardar,
+}: Props) {
+  const editando = Boolean(punto)
+
+  const [titulo, setTitulo] = useState(punto?.titulo ?? '')
+  const [seleccionadas, setSeleccionadas] = useState<string[]>(
+    punto?.disponibilidades.map((disponibilidad) => disponibilidad.nombre) ?? [],
+  )
+  const [categoria, setCategoria] = useState(
+    buscarCategoria(punto?.categoria?.nombre) ?? CATEGORIAS[0],
+  )
   const [guardando, setGuardando] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [intentado, setIntentado] = useState(false)
 
   const tituloVacio = !titulo.trim()
-  const descripcionVacia = !descripcion.trim()
+  const sinDisponibilidad = seleccionadas.length === 0
+
+  function alternarDisponibilidad(nombre: string) {
+    setSeleccionadas((actuales) =>
+      actuales.includes(nombre)
+        ? actuales.filter((item) => item !== nombre)
+        : [...actuales, nombre],
+    )
+  }
 
   async function manejarEnvio(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault()
     setIntentado(true)
     setError(null)
 
-    if (tituloVacio || descripcionVacia || guardando) return
+    if (tituloVacio || sinDisponibilidad || guardando) return
 
     setGuardando(true)
     try {
-      await onGuardar({ titulo, descripcion, latitud: coordenadas.lat, longitud: coordenadas.lng, categoria })
+      await onGuardar({
+        titulo,
+        latitud: coordenadas.lat,
+        longitud: coordenadas.lng,
+        categoria,
+        disponibilidades: DISPONIBILIDADES.filter((opcion) =>
+          seleccionadas.includes(opcion.nombre),
+        ).map((opcion) => opcion.nombre),
+      })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'No se pudo guardar el punto.')
     } finally {
@@ -47,9 +76,13 @@ export function FormularioPunto({ coordenadas, onCancelar, onGuardar }: Props) {
         <ArrowLeft size={14} /> Volver a la lista
       </button>
 
-      <h2 className="font-display text-lg font-bold tracking-tight">Nuevo punto</h2>
+      <h2 className="font-display text-lg font-bold tracking-tight">
+        {editando ? 'Editar punto' : 'Nuevo punto'}
+      </h2>
       <p className="mt-1 text-xs text-ink-soft">
-        Ubicación seleccionada en el mapa.
+        {editando
+          ? 'Actualiza la información de este lugar.'
+          : 'Ubicación seleccionada en el mapa.'}
       </p>
       <p className="mt-2 w-fit rounded-md bg-mist px-2 py-1 font-data text-[11px] text-ink-soft">
         {coordenadas.lat.toFixed(5)}, {coordenadas.lng.toFixed(5)}
@@ -77,23 +110,58 @@ export function FormularioPunto({ coordenadas, onCancelar, onGuardar }: Props) {
         </div>
 
         <div>
-          <label htmlFor="descripcion" className="text-xs font-semibold">
-            Descripción
-          </label>
-          <textarea
-            id="descripcion"
-            value={descripcion}
-            onChange={(evento) => setDescripcion(evento.target.value)}
-            rows={3}
-            placeholder="¿Qué encontrarás en este lugar?"
-            className={`mt-1.5 w-full resize-none rounded-xl border px-3 py-2.5 text-sm focus:outline-none ${
-              intentado && descripcionVacia
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-xs font-semibold">Disponibilidad</span>
+            <span className="font-data text-[10px] text-ink-soft">
+              {seleccionadas.length} seleccionada
+              {seleccionadas.length === 1 ? '' : 's'}
+            </span>
+          </div>
+          <p className="mt-1 text-[11px] text-ink-soft">
+            Selecciona una o varias opciones.
+          </p>
+
+          <div
+            className={`mt-2 space-y-2 rounded-xl border p-2 ${
+              intentado && sinDisponibilidad
                 ? 'border-red-400 bg-red-50/40'
-                : 'border-[#DCE6E9] focus:border-teal'
+                : 'border-[#DCE6E9]'
             }`}
-          />
-          {intentado && descripcionVacia && (
-            <p className="mt-1 text-[11px] text-red-600">Agrega una descripción.</p>
+          >
+            {DISPONIBILIDADES.map((opcion) => {
+              const activa = seleccionadas.includes(opcion.nombre)
+              const Icono = opcion.Icono
+
+              return (
+                <button
+                  key={opcion.nombre}
+                  type="button"
+                  onClick={() => alternarDisponibilidad(opcion.nombre)}
+                  aria-pressed={activa}
+                  className={`flex w-full items-center gap-2.5 rounded-lg border px-2.5 py-2 text-left text-xs font-semibold transition ${
+                    activa
+                      ? 'border-teal bg-teal/5 text-ink'
+                      : 'border-transparent text-ink-soft hover:bg-mist'
+                  }`}
+                >
+                  <Icono size={16} color={opcion.color} />
+                  <span className="flex-1">{opcion.nombre}</span>
+                  <span
+                    className={`grid h-4 w-4 place-items-center rounded border ${
+                      activa ? 'border-teal bg-teal text-white' : 'border-[#C8D6DB]'
+                    }`}
+                  >
+                    {activa && <Check size={11} strokeWidth={3} />}
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+
+          {intentado && sinDisponibilidad && (
+            <p className="mt-1 text-[11px] text-red-600">
+              Selecciona al menos una disponibilidad.
+            </p>
           )}
         </div>
 
@@ -140,8 +208,16 @@ export function FormularioPunto({ coordenadas, onCancelar, onGuardar }: Props) {
           disabled={guardando}
           className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-teal px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0b6972] disabled:opacity-60"
         >
-          {guardando ? <LoaderCircle size={16} className="animate-spin" /> : <Save size={16} />}
-          {guardando ? 'Guardando...' : 'Guardar punto'}
+          {guardando ? (
+            <LoaderCircle size={16} className="animate-spin" />
+          ) : (
+            <Save size={16} />
+          )}
+          {guardando
+            ? 'Guardando...'
+            : editando
+              ? 'Guardar cambios'
+              : 'Guardar punto'}
         </button>
         <button
           type="button"
