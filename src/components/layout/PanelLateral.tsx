@@ -63,7 +63,7 @@ export function PanelLateral({
             pillarRotation={-90}
             rotationSpeed={0.3}
             interactive
-            clickPulse
+            clickPulse={false}
             intro
             quality="high"
             resolution={1.4}
