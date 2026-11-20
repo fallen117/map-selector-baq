@@ -1,4 +1,5 @@
 import { Crosshair, RefreshCw, TriangleAlert } from 'lucide-react'
+import LightPillar from '../LightPillar'
 import { RUTAS_IMAGENES } from '../../config/imagenes'
 import { CIUDAD } from '../../config/mapaConfig'
 import type { Coordenadas, NuevoPunto, PuntoInteres } from '../../types/mapa.types'
@@ -49,31 +50,66 @@ export function PanelLateral({
 }: Props) {
   return (
     <aside className="z-20 flex h-[45vh] w-full shrink-0 flex-col border-b border-[#E6ECEE] bg-white md:h-full md:w-[30%] md:min-w-[320px] md:max-w-[460px] md:border-b-0 md:border-r">
-      <header className="px-6 pb-5 pt-6">
-        <div className="flex h-14 items-center gap-3">
-          <img
-            src={RUTAS_IMAGENES.logoAplicacion}
-            alt={`Logo de ${CIUDAD.nombre}`}
-            className="h-full w-auto max-w-[120px] shrink-0 object-contain"
+      <header className="relative isolate min-h-[150px] overflow-hidden bg-[#050505] px-6 pb-6 pt-7 text-white">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+          <LightPillar
+            topColor="#000000"
+            bottomColor="#242424"
+            intensity={1.2}
+            glowAmount={0.004}
+            bloom={0.7}
+            pillarWidth={5}
+            pillarHeight={0.26}
+            pillarRotation={-90}
+            rotationSpeed={0.3}
+            interactive
+            clickPulse
+            intro
+            quality="high"
+            resolution={1.4}
+            mixBlendMode="screen"
+            twist={0.35}
           />
-          <div>
-            <p className="font-display text-xl font-bold leading-none tracking-tight">
-              {CIUDAD.nombre}
-            </p>
-            <p className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-ink-soft">
-              {CIUDAD.subtitulo}
-            </p>
-          </div>
         </div>
-        <p className="mt-4 text-xs text-ink-soft">{CIUDAD.region}</p>
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(90deg, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.68) 44%, rgba(0,0,0,0.28) 100%)',
+          }}
+          aria-hidden="true"
+        />
+
+        <div className="relative z-10">
+          <div className="flex h-14 items-center gap-3">
+            <div className="flex h-full shrink-0 items-center rounded-xl bg-white/90 px-1.5 shadow-lg backdrop-blur-sm">
+              <img
+                src={RUTAS_IMAGENES.logoAplicacion}
+                alt={`Logo de ${CIUDAD.nombre}`}
+                className="h-full w-auto max-w-[120px] object-contain"
+              />
+            </div>
+            <div>
+              <p className="font-display text-xl font-bold leading-none tracking-tight text-white">
+                {CIUDAD.nombre}
+              </p>
+              <p className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/65">
+                {CIUDAD.subtitulo}
+              </p>
+            </div>
+          </div>
+          <p className="mt-4 text-xs text-white/60">{CIUDAD.region}</p>
+        </div>
       </header>
 
-      <FiltrosCategoria
-        termino={termino}
-        onTermino={onTermino}
-        categoriaActiva={categoriaActiva}
-        onCategoria={onCategoria}
-      />
+      <div className="mt-4">
+        <FiltrosCategoria
+          termino={termino}
+          onTermino={onTermino}
+          categoriaActiva={categoriaActiva}
+          onCategoria={onCategoria}
+        />
+      </div>
 
       <div className="panel-scroll flex-1 overflow-y-auto px-6 py-5">
         {error && (
