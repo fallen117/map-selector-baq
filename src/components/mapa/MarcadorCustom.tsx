@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, type CSSProperties } from 'react'
 import type { Marker as LeafletMarker } from 'leaflet'
 import { MapPin } from 'lucide-react'
 import { Marker, Popup } from 'react-leaflet'
@@ -36,25 +36,37 @@ export function MarcadorCustom({ punto, resaltado, onSeleccionar }: Props) {
       eventHandlers={{ click: () => onSeleccionar(punto) }}
     >
       <Popup>
-        <div className="flex min-w-[190px] max-w-[260px] gap-3">
-          <span
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-white"
-            style={{ backgroundColor: categoria?.color ?? '#0E7C86' }}
-          >
-            <Icono size={17} />
-          </span>
-          <div className="min-w-0">
-            <p className="font-display text-sm font-bold leading-tight">{punto.titulo}</p>
-            {punto.disponibilidades.length > 0 ? (
-              <div className="mt-1.5 flex flex-wrap gap-1">
-                {punto.disponibilidades.map((disponibilidad) => {
+        <article className="popup-glass">
+          <header className="popup-glass__head">
+            <span
+              className="popup-glass__icon"
+              style={
+                {
+                  '--icon-color': categoria?.color ?? '#0E7C86',
+                } as CSSProperties
+              }
+            >
+              <Icono size={18} />
+            </span>
+            <div className="min-w-0">
+              <p className="popup-glass__eyebrow">
+                {punto.categoria?.nombre ?? 'Punto de interés'}
+              </p>
+              <p className="popup-glass__title">{punto.titulo}</p>
+            </div>
+          </header>
+
+          <div className="popup-glass__details">
+            <div className="popup-glass__chips">
+              {punto.disponibilidades.length > 0 ? (
+                punto.disponibilidades.map((disponibilidad) => {
                   const opcion = buscarDisponibilidad(disponibilidad.nombre)
                   const IconoDisponibilidad = opcion?.Icono
 
                   return (
                     <span
                       key={disponibilidad.id}
-                      className="inline-flex items-center gap-1 rounded-md bg-mist px-1.5 py-0.5 text-[10px] font-semibold text-ink-soft"
+                      className="popup-glass__chip"
                     >
                       {IconoDisponibilidad && (
                         <IconoDisponibilidad size={11} color={opcion?.color} />
@@ -62,18 +74,18 @@ export function MarcadorCustom({ punto, resaltado, onSeleccionar }: Props) {
                       {disponibilidad.nombre}
                     </span>
                   )
-                })}
-              </div>
-            ) : (
-              <p className="mt-1.5 text-[11px] text-ink-soft">
-                Sin disponibilidad registrada
-              </p>
-            )}
-            <p className="mt-2 font-data text-[10px] text-[#8BA0AA]">
+                })
+              ) : (
+                <span className="popup-glass__empty">
+                  Sin disponibilidad registrada
+                </span>
+              )}
+            </div>
+            <p className="popup-glass__coords">
               {punto.latitud.toFixed(5)}, {punto.longitud.toFixed(5)}
             </p>
           </div>
-        </div>
+        </article>
       </Popup>
     </Marker>
   )

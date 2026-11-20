@@ -1,4 +1,5 @@
-import { Crosshair, MapPinned, RefreshCw, TriangleAlert } from 'lucide-react'
+import { Crosshair, RefreshCw, TriangleAlert } from 'lucide-react'
+import { RUTAS_IMAGENES } from '../../config/imagenes'
 import { CIUDAD } from '../../config/mapaConfig'
 import type { Coordenadas, NuevoPunto, PuntoInteres } from '../../types/mapa.types'
 import { FiltrosCategoria } from '../sidebar/FiltrosCategoria'
@@ -49,10 +50,12 @@ export function PanelLateral({
   return (
     <aside className="z-20 flex h-[45vh] w-full shrink-0 flex-col border-b border-[#E6ECEE] bg-white md:h-full md:w-[30%] md:min-w-[320px] md:max-w-[460px] md:border-b-0 md:border-r">
       <header className="px-6 pb-5 pt-6">
-        <div className="flex items-center gap-3">
-          <div className="grid h-10 w-10 place-items-center rounded-xl bg-ink text-white">
-            <MapPinned size={20} />
-          </div>
+        <div className="flex h-14 items-center gap-3">
+          <img
+            src={RUTAS_IMAGENES.logoAplicacion}
+            alt={`Logo de ${CIUDAD.nombre}`}
+            className="h-full w-auto max-w-[120px] shrink-0 object-contain"
+          />
           <div>
             <p className="font-display text-xl font-bold leading-none tracking-tight">
               {CIUDAD.nombre}
