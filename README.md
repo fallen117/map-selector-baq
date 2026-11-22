@@ -1,6 +1,6 @@
-# Mapa de interés · Soledad
+# Map Selector - BAQ/SOL
 
-Aplicación web para explorar, consultar y registrar puntos de interés en el mapa de Soledad (Atlántico, Colombia). La interfaz combina un panel lateral de consulta con un mapa interactivo principal, y toda la información se persiste en Supabase.
+Aplicación web para explorar, consultar y registrar puntos de interés en el mapa de Barranquilla y su área metropolitana (Atlántico, Colombia). La interfaz combina un panel lateral de consulta con un mapa interactivo principal, y toda la información se persiste en Supabase.
 
 ## Funcionalidades
 
