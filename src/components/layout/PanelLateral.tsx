@@ -66,7 +66,7 @@ export function PanelLateral({
             clickPulse={false}
             intro
             quality="high"
-            resolution={1.4}
+            resolution={1.54}
             mixBlendMode="screen"
             twist={0.35}
           />
