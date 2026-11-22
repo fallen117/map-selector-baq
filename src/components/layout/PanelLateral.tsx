@@ -124,7 +124,7 @@ export function PanelLateral({
             <button
               type="button"
               onClick={onReintentar}
-              className="mt-3 flex items-center gap-1.5 text-[11px] font-semibold text-red-700 hover:underline"
+              className="mt-3 flex items-center gap-1.5 rounded-md text-[11px] font-semibold text-red-700 hover:underline active:bg-onyx active:text-white"
             >
               <RefreshCw size={12} /> Reintentar
             </button>

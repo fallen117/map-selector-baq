@@ -71,7 +71,7 @@ export function FormularioPunto({
       <button
         type="button"
         onClick={onCancelar}
-        className="mb-4 flex items-center gap-1.5 text-xs font-semibold text-ink-soft transition hover:text-teal"
+        className="mb-4 flex items-center gap-1.5 text-xs font-semibold text-ink-soft transition hover:text-teal active:text-onyx"
       >
         <ArrowLeft size={14} /> Volver a la lista
       </button>
@@ -84,7 +84,7 @@ export function FormularioPunto({
           ? 'Actualiza la información de este lugar.'
           : 'Ubicación seleccionada en el mapa.'}
       </p>
-      <p className="mt-2 w-fit rounded-md bg-mist px-2 py-1 font-data text-[11px] text-ink-soft">
+      <p className="mt-2 w-fit rounded-md bg-mist px-2 py-1 font-data text-[11px] text-ink-soft transition hover:bg-onyx/10 hover:text-ink">
         {coordenadas.lat.toFixed(5)}, {coordenadas.lng.toFixed(5)}
       </p>
 
@@ -141,7 +141,7 @@ export function FormularioPunto({
                   className={`flex w-full items-center gap-2.5 rounded-lg border px-2.5 py-2 text-left text-xs font-semibold transition ${
                     activa
                       ? 'border-teal bg-teal/5 text-ink'
-                      : 'border-transparent text-ink-soft hover:bg-mist'
+                      : 'border-transparent text-ink-soft hover:bg-mist active:bg-onyx active:text-white'
                   }`}
                 >
                   <Icono size={16} color={opcion.color} />
@@ -181,7 +181,7 @@ export function FormularioPunto({
                   className={`flex flex-col items-center gap-1.5 rounded-xl border px-2 py-2.5 text-[10px] font-semibold transition ${
                     activa
                       ? 'border-teal bg-teal/5 text-ink'
-                      : 'border-[#DCE6E9] text-ink-soft hover:bg-mist'
+                      : 'border-[#DCE6E9] text-ink-soft hover:bg-mist active:bg-onyx active:text-white'
                   }`}
                 >
                   <Icono size={18} color={opcion.color} />
@@ -206,7 +206,7 @@ export function FormularioPunto({
         <button
           type="submit"
           disabled={guardando}
-          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-teal px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0b6972] disabled:opacity-60"
+          className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-teal px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0b6972] active:bg-onyx disabled:opacity-60"
         >
           {guardando ? (
             <LoaderCircle size={16} className="animate-spin" />
@@ -223,7 +223,7 @@ export function FormularioPunto({
           type="button"
           onClick={onCancelar}
           disabled={guardando}
-          className="rounded-xl border border-[#DCE6E9] px-4 py-2.5 text-sm font-semibold text-ink-soft transition hover:bg-mist disabled:opacity-60"
+          className="rounded-xl border border-[#DCE6E9] px-4 py-2.5 text-sm font-semibold text-ink-soft transition hover:bg-mist active:bg-onyx active:text-white disabled:opacity-60"
         >
           Cancelar
         </button>

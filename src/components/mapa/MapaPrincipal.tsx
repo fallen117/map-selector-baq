@@ -74,7 +74,7 @@ export function MapaPrincipal({
         <button
           type="button"
           onClick={onCentrar}
-          className="pointer-events-auto flex items-center gap-2 rounded-xl bg-ink px-3.5 py-2.5 text-xs font-semibold text-white shadow-lg transition hover:bg-[#233f51]"
+          className="pointer-events-auto flex items-center gap-2 rounded-xl bg-ink px-3.5 py-2.5 text-xs font-semibold text-white shadow-lg transition hover:bg-[#233f51] active:bg-onyx"
         >
           <Crosshair size={15} /> Centrar vista
         </button>

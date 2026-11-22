@@ -54,7 +54,7 @@ export function ListaPuntos({
         <button
           type="button"
           onClick={onLimpiarFiltros}
-          className="mt-4 text-xs font-semibold text-teal hover:underline"
+          className="mt-4 rounded-md text-xs font-semibold text-teal hover:underline active:bg-onyx active:text-white"
         >
           Limpiar filtros
         </button>
@@ -91,7 +91,7 @@ export function ListaPuntos({
           const eliminando = eliminandoId === punto.id
 
           return (
-            <li key={punto.id} className="rounded-xl transition hover:bg-mist/70">
+            <li key={punto.id} className="rounded-xl transition hover:bg-mist/70 active:bg-onyx/5">
               <div className="flex items-start gap-1 p-2">
                 <button
                   type="button"
@@ -119,7 +119,7 @@ export function ListaPuntos({
                           return (
                             <span
                               key={disponibilidad.id}
-                              className="inline-flex items-center gap-1 rounded-md bg-mist px-1.5 py-0.5 text-[10px] font-semibold text-ink-soft"
+                              className="inline-flex items-center gap-1 rounded-md bg-mist px-1.5 py-0.5 text-[10px] font-semibold text-ink-soft transition hover:bg-onyx/10 hover:text-ink"
                             >
                               {IconoDisponibilidad && (
                                 <IconoDisponibilidad
@@ -149,7 +149,7 @@ export function ListaPuntos({
                     onClick={() => onEditar(punto)}
                     aria-label={`Editar ${punto.titulo}`}
                     title="Editar punto"
-                    className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft transition hover:bg-white hover:text-teal"
+                    className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft transition hover:bg-white hover:text-teal active:bg-onyx active:text-white"
                   >
                     <Pencil size={15} />
                   </button>
@@ -158,7 +158,7 @@ export function ListaPuntos({
                     onClick={() => setConfirmandoId(punto.id)}
                     aria-label={`Eliminar ${punto.titulo}`}
                     title="Eliminar punto"
-                    className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft transition hover:bg-red-50 hover:text-red-600"
+                    className="grid h-8 w-8 place-items-center rounded-lg text-ink-soft transition hover:bg-red-50 hover:text-red-600 active:bg-onyx active:text-white"
                   >
                     <Trash2 size={15} />
                   </button>
@@ -195,7 +195,7 @@ export function ListaPuntos({
                       type="button"
                       disabled={eliminando}
                       onClick={() => setConfirmandoId(null)}
-                      className="rounded-md px-2.5 py-1.5 text-[11px] font-semibold text-red-800 hover:underline"
+                      className="rounded-md px-2.5 py-1.5 text-[11px] font-semibold text-red-800 hover:underline active:bg-onyx active:text-white"
                     >
                       Cancelar
                     </button>

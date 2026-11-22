@@ -27,7 +27,7 @@ export function FiltrosCategoria({
           onChange={(evento) => onTermino(evento.target.value)}
           placeholder="Buscar punto o calle..."
           aria-label="Buscar puntos"
-          className="w-full rounded-xl border border-[#DCE6E9] bg-mist/60 py-2.5 pl-10 pr-3 text-sm text-ink placeholder:text-[#8BA0AA] focus:border-teal focus:bg-white focus:outline-none"
+          className="w-full rounded-xl border border-[#DCE6E9] bg-mist/60 py-2.5 pl-10 pr-3 text-sm text-ink placeholder:text-[#8BA0AA] hover:border-onyx/25 focus:border-teal focus:bg-white focus:outline-none"
         />
       </label>
 
@@ -39,7 +39,7 @@ export function FiltrosCategoria({
           className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold transition ${
             categoriaActiva === null
               ? 'bg-ink text-white'
-              : 'bg-mist text-ink-soft hover:bg-[#E1EAEC]'
+              : 'bg-mist text-ink-soft hover:bg-[#E1EAEC] active:bg-onyx active:text-white'
           }`}
         >
           Todas
@@ -58,7 +58,7 @@ export function FiltrosCategoria({
               className={`flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
                 activa
                   ? 'border-transparent text-white'
-                  : 'border-[#DCE6E9] bg-white text-ink-soft hover:bg-mist'
+                  : 'border-[#DCE6E9] bg-white text-ink-soft hover:bg-mist active:bg-onyx active:text-white'
               }`}
               style={activa ? { backgroundColor: categoria.color } : undefined}
             >

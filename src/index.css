@@ -7,11 +7,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-ink: #152a38;
+  --color-ink: #060606;
   --color-ink-soft: #4d6674;
   --color-teal: #0e7c86;
   --color-sun: #f2b544;
   --color-mist: #eef3f4;
+  --color-onyx: #060606;
   --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --font-body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-data: "IBM Plex Mono", ui-monospace, monospace;
@@ -57,6 +58,10 @@ body {
 
 .pin > svg {
   transform: rotate(45deg);
+}
+
+.pin:hover {
+  box-shadow: 0 8px 20px rgb(6 6 6 / 38%);
 }
 
 .pin-temporal {
@@ -155,6 +160,24 @@ body {
   color: var(--color-teal);
 }
 
+.leaflet-container a.leaflet-popup-close-button:active {
+  background: var(--color-onyx);
+  color: #ffffff;
+}
+
+/* Controles del mapa: el onyx aparece solo al interactuar. */
+.leaflet-container .leaflet-bar a:hover {
+  background: var(--color-onyx);
+  color: #ffffff;
+}
+
+.leaflet-container .leaflet-popup-content-wrapper:hover {
+  box-shadow:
+    0 20px 46px rgb(6 6 6 / 32%),
+    inset 0 1px 0 rgb(255 255 255 / 90%),
+    inset 0 -1px 0 rgb(6 6 6 / 8%);
+}
+
 /* Contenido del popup: cabecera y detalles comparten una sola superficie de vidrio. */
 .popup-glass {
   display: flex;
@@ -245,6 +268,11 @@ body {
   color: var(--color-ink-soft);
 }
 
+.popup-glass__chip:hover {
+  background: rgb(6 6 6 / 12%);
+  color: var(--color-ink);
+}
+
 .popup-glass__coords {
   flex: none;
   border-left: 1px solid rgb(21 42 56 / 12%);
@@ -301,6 +329,10 @@ body {
 .panel-scroll::-webkit-scrollbar-thumb {
   background: #cbd8dc;
   border-radius: 999px;
+}
+
+.panel-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--color-onyx);
 }
 
 @theme inline {
