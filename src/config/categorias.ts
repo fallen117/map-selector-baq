@@ -16,7 +16,7 @@ export interface CategoriaCatalogo {
 
 export const CATEGORIAS: CategoriaCatalogo[] = [
   { nombre: 'Tienda', icono: 'ShoppingBag', color: '#3F6FB5', Icono: ShoppingBag },
-  { nombre: 'Parqueadero', icono: 'Utensils', color: '#D9634F', Icono: ParkingSquare },
+  { nombre: 'Parqueadero', icono: 'ParkingSquare', color: '#D9634F', Icono: ParkingSquare },
   { nombre: 'Parque', icono: 'Trees', color: '#2F8F6B', Icono: Trees },
   { nombre: 'Alerta', icono: 'TriangleAlert', color: '#D99A2B', Icono: AlertTriangle },
 ]
