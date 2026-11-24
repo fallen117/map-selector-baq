@@ -2,7 +2,6 @@ import {
   AlertTriangle,
   ParkingSquare,
   ShoppingBag,
-  Toilet,
   Trees,
   type LucideIcon,
 } from 'lucide-react'
@@ -19,7 +18,6 @@ export const CATEGORIAS: CategoriaCatalogo[] = [
   { nombre: 'Tienda', icono: 'ShoppingBag', color: '#3F6FB5', Icono: ShoppingBag },
   { nombre: 'Parqueadero', icono: 'Utensils', color: '#D9634F', Icono: ParkingSquare },
   { nombre: 'Parque', icono: 'Trees', color: '#2F8F6B', Icono: Trees },
-  { nombre: 'Baño', icono: 'Toilet', color: '#7A5EA8', Icono: Toilet },
   { nombre: 'Alerta', icono: 'TriangleAlert', color: '#D99A2B', Icono: AlertTriangle },
 ]
 

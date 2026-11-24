@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Crosshair, RefreshCw, TriangleAlert } from 'lucide-react'
 import LightPillar from '../LightPillar'
 import { RUTAS_IMAGENES } from '../../config/imagenes'
@@ -48,6 +49,8 @@ export function PanelLateral({
   onEditar,
   onEliminar,
 }: Props) {
+  const [logoCristal, setLogoCristal] = useState(false)
+
   return (
     <aside className="z-20 flex h-[45vh] w-full shrink-0 flex-col border-b border-[#E6ECEE] bg-white md:h-full md:w-[30%] md:min-w-[320px] md:max-w-[460px] md:border-b-0 md:border-r">
       <header className="relative isolate min-h-[150px] overflow-hidden bg-[#050505] px-6 pb-6 pt-7 text-white">
@@ -82,13 +85,24 @@ export function PanelLateral({
 
         <div className="relative z-10">
           <div className="flex h-14 items-center gap-3">
-            <div className="flex h-full shrink-0 items-center rounded-xl bg-white/90 px-1.5 shadow-lg backdrop-blur-sm">
+            <button
+              type="button"
+              onClick={() => setLogoCristal((valor) => !valor)}
+              aria-pressed={logoCristal}
+              aria-label={
+                logoCristal
+                  ? 'Restaurar fondo del logo'
+                  : 'Activar efecto cristalino del logo'
+              }
+              data-glass={logoCristal ? 'true' : 'false'}
+              className="logo-glass flex h-full shrink-0 cursor-pointer items-center overflow-hidden rounded-xl border-0 py-0 px-1.5"
+            >
               <img
                 src={RUTAS_IMAGENES.logoAplicacion}
                 alt={`Logo de ${CIUDAD.nombre}`}
-                className="h-full w-auto max-w-[120px] object-contain"
+                className="relative z-10 h-full w-auto max-w-[120px] object-contain"
               />
-            </div>
+            </button>
             <div>
               <p className="font-display text-xl font-bold leading-none tracking-tight text-white">
                 {CIUDAD.nombre}

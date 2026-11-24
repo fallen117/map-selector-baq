@@ -316,6 +316,80 @@ body {
   }
 }
 
+/* Placa del logo: al hacer clic pasa a vidrio líquido sin alterar el SVG interior. */
+.logo-glass {
+  position: relative;
+  isolation: isolate;
+  background-color: rgb(255 255 255 / 90%);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0%),
+    0 10px 15px -3px rgb(6 6 6 / 25%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition:
+    background-color 320ms ease,
+    box-shadow 320ms ease,
+    backdrop-filter 320ms ease,
+    -webkit-backdrop-filter 320ms ease;
+    cursor: auto;
+}
+
+.logo-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgb(255 255 255 / 40%) 50%,
+    transparent 65%
+  );
+  opacity: 0;
+  transform: translateX(-120%);
+}
+
+.logo-glass[data-glass='true'] {
+  background-color: rgb(255 255 255 / 6%);
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 55%),
+    inset 0 1px 0 rgb(255 255 255 / 45%),
+    inset 0 -1px 0 rgb(6 6 6 / 10%),
+    0 8px 22px rgb(6 6 6 / 28%);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+}
+
+.logo-glass[data-glass='true']::after {
+  animation: logo-glass-sheen 900ms ease-out 1 both;
+}
+
+@keyframes logo-glass-sheen {
+  from {
+    opacity: 0;
+    transform: translateX(-120%);
+  }
+  35% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(120%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-glass {
+    transition: none;
+  }
+
+  .logo-glass[data-glass='true']::after {
+    animation: none;
+  }
+}
+
 /* Barra de desplazamiento del panel */
 .panel-scroll {
   scrollbar-width: thin;
