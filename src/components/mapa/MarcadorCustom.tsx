@@ -4,6 +4,7 @@ import { MapPin } from 'lucide-react'
 import { Marker, Popup } from 'react-leaflet'
 import { buscarCategoria } from '../../config/categorias'
 import { buscarDisponibilidad } from '../../config/disponibilidad'
+import { buscarIcono } from '../../config/iconos'
 import type { PuntoInteres } from '../../types/mapa.types'
 import { crearIconoPin } from '../../utils/iconosLeaflet'
 
@@ -16,7 +17,8 @@ interface Props {
 export function MarcadorCustom({ punto, resaltado, onSeleccionar }: Props) {
   const referencia = useRef<LeafletMarker>(null)
   const categoria = buscarCategoria(punto.categoria?.nombre)
-  const Icono = categoria?.Icono ?? MapPin
+  const Icono =
+    categoria?.Icono ?? buscarIcono(punto.categoria?.icono_nombre) ?? MapPin
 
   const icono = useMemo(
     () =>

@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Crosshair, RefreshCw, TriangleAlert } from 'lucide-react'
+import { Crosshair, Plus, RefreshCw, Sparkles, TriangleAlert } from 'lucide-react'
 import LightPillar from '../LightPillar'
+import type { CategoriaCatalogo } from '../../config/categorias'
 import { RUTAS_IMAGENES } from '../../config/imagenes'
 import { CIUDAD } from '../../config/mapaConfig'
 import type { Coordenadas, NuevoPunto, PuntoInteres } from '../../types/mapa.types'
@@ -10,6 +11,7 @@ import { ListaPuntos } from '../sidebar/ListaPuntos'
 
 interface Props {
   puntos: PuntoInteres[]
+  categorias: CategoriaCatalogo[]
   cargando: boolean
   error: string | null
   termino: string
@@ -24,6 +26,7 @@ interface Props {
   onCancelar: () => void
   onCancelarEdicion: () => void
   onGuardar: (nuevo: NuevoPunto) => Promise<void>
+  onAbrirPersonalizado: () => void
   onSeleccionar: (punto: PuntoInteres) => void
   onEditar: (punto: PuntoInteres) => void
   onEliminar: (id: string) => Promise<boolean>
@@ -31,6 +34,7 @@ interface Props {
 
 export function PanelLateral({
   puntos,
+  categorias,
   cargando,
   error,
   termino,
@@ -45,6 +49,7 @@ export function PanelLateral({
   onCancelar,
   onCancelarEdicion,
   onGuardar,
+  onAbrirPersonalizado,
   onSeleccionar,
   onEditar,
   onEliminar,
@@ -118,11 +123,23 @@ export function PanelLateral({
 
       <div className="mt-4">
         <FiltrosCategoria
+          categorias={categorias}
           termino={termino}
           onTermino={onTermino}
           categoriaActiva={categoriaActiva}
           onCategoria={onCategoria}
         />
+        <div className="px-6 pb-3">
+          <button
+            type="button"
+            onClick={onAbrirPersonalizado}
+            className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#C8D6DB] bg-white/70 px-3 py-2 text-xs font-semibold text-ink-soft transition hover:border-teal hover:bg-teal/5 hover:text-teal active:bg-onyx active:text-white"
+          >
+            <Plus size={14} />
+            Crear POI personalizado
+            <Sparkles size={12} className="text-teal" />
+          </button>
+        </div>
       </div>
 
       <div className="panel-scroll flex-1 overflow-y-auto px-6 py-5">
@@ -148,6 +165,7 @@ export function PanelLateral({
         {coordenadasTemporales ? (
           <FormularioPunto
             key="nuevo"
+            categorias={categorias}
             coordenadas={coordenadasTemporales}
             onCancelar={onCancelar}
             onGuardar={onGuardar}
@@ -155,6 +173,7 @@ export function PanelLateral({
         ) : puntoEnEdicion ? (
           <FormularioPunto
             key={puntoEnEdicion.id}
+            categorias={categorias}
             coordenadas={{
               lat: puntoEnEdicion.latitud,
               lng: puntoEnEdicion.longitud,

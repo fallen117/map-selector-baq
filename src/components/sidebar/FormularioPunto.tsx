@@ -1,10 +1,11 @@
 import { useState, type FormEvent } from 'react'
 import { ArrowLeft, Check, LoaderCircle, Save } from 'lucide-react'
-import { buscarCategoria, CATEGORIAS } from '../../config/categorias'
+import { buscarCategoria, type CategoriaCatalogo } from '../../config/categorias'
 import { DISPONIBILIDADES } from '../../config/disponibilidad'
 import type { Coordenadas, NuevoPunto, PuntoInteres } from '../../types/mapa.types'
 
 interface Props {
+  categorias: CategoriaCatalogo[]
   coordenadas: Coordenadas
   punto?: PuntoInteres | null
   onCancelar: () => void
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export function FormularioPunto({
+  categorias,
   coordenadas,
   punto,
   onCancelar,
@@ -23,8 +25,8 @@ export function FormularioPunto({
   const [seleccionadas, setSeleccionadas] = useState<string[]>(
     punto?.disponibilidades.map((disponibilidad) => disponibilidad.nombre) ?? [],
   )
-  const [categoria, setCategoria] = useState(
-    buscarCategoria(punto?.categoria?.nombre) ?? CATEGORIAS[0],
+  const [categoria, setCategoria] = useState<CategoriaCatalogo>(
+    () => buscarCategoria(punto?.categoria?.nombre) ?? categorias[0],
   )
   const [guardando, setGuardando] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -168,7 +170,7 @@ export function FormularioPunto({
         <div>
           <span className="text-xs font-semibold">Icono descriptivo</span>
           <div className="mt-2 grid grid-cols-3 gap-2">
-            {CATEGORIAS.map((opcion) => {
+            {categorias.map((opcion) => {
               const activa = opcion.nombre === categoria.nombre
               const Icono = opcion.Icono
 

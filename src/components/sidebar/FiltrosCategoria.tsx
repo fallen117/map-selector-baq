@@ -1,7 +1,8 @@
 import { Search } from 'lucide-react'
-import { CATEGORIAS } from '../../config/categorias'
+import type { CategoriaCatalogo } from '../../config/categorias'
 
 interface Props {
+  categorias: CategoriaCatalogo[]
   termino: string
   onTermino: (valor: string) => void
   categoriaActiva: string | null
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export function FiltrosCategoria({
+  categorias,
   termino,
   onTermino,
   categoriaActiva,
@@ -45,7 +47,7 @@ export function FiltrosCategoria({
           Todas
         </button>
 
-        {CATEGORIAS.map((categoria) => {
+        {categorias.map((categoria) => {
           const activa = categoriaActiva === categoria.nombre
           const Icono = categoria.Icono
 

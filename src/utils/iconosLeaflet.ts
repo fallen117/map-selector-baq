@@ -2,11 +2,8 @@ import L from 'leaflet'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { MapPin } from 'lucide-react'
-import { CATEGORIAS } from '../config/categorias'
-
-function colorSeguro(color: string | null | undefined) {
-  return color && /^#[0-9a-fA-F]{6}$/.test(color) ? color : '#0E7C86'
-}
+import { colorSeguro } from '../config/categorias'
+import { buscarIcono } from '../config/iconos'
 
 /** Convierte el nombre de un icono de Lucide en un marcador divIcon de Leaflet. */
 export function crearIconoPin(
@@ -14,8 +11,7 @@ export function crearIconoPin(
   icono: string | null | undefined,
   temporal = false,
 ) {
-  const categoria = CATEGORIAS.find((item) => item.icono === icono)
-  const Icono = categoria?.Icono ?? MapPin
+  const Icono = buscarIcono(icono) ?? MapPin
 
   const svg = renderToStaticMarkup(
     createElement(Icono, { size: 17, strokeWidth: 2.4, color: '#ffffff' }),

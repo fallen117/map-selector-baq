@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Compass, LoaderCircle, MapPinOff, Pencil, Trash2 } from 'lucide-react'
 import { buscarCategoria } from '../../config/categorias'
 import { buscarDisponibilidad } from '../../config/disponibilidad'
+import { buscarIcono } from '../../config/iconos'
 import type { PuntoInteres } from '../../types/mapa.types'
 
 interface Props {
@@ -85,7 +86,8 @@ export function ListaPuntos({
       <ul className="space-y-1">
         {puntos.map((punto) => {
           const categoria = buscarCategoria(punto.categoria?.nombre)
-          const Icono = categoria?.Icono ?? Compass
+          const Icono =
+            categoria?.Icono ?? buscarIcono(punto.categoria?.icono_nombre) ?? Compass
           const color = categoria?.color ?? '#0E7C86'
           const confirmando = confirmandoId === punto.id
           const eliminando = eliminandoId === punto.id
